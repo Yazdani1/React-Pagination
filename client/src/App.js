@@ -1,15 +1,40 @@
+import React, { useState, useEffect } from 'react';
+import Pagination from './Pagination'
+import axios from 'axios'
+import Posts from './Components/Posts'
+function App() {
+  const [posts, setPosts] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [postsPerPage] = useState(1)
 
-import './App.css';
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setLoading(true)
+      const res = await axios.get('https://jsonplaceholder.typicode.com/posts')
+      setPosts(res.data)
+      setLoading(false)
+    }
 
-const App=()=>{
+    fetchPosts()
+  }, [])
 
-  return(
-    <div>
-      <h1>Hello React js</h1>
+  if (loading && posts.length === 0) {
+    return <h2>Loading...</h2>
+  }
+  //Get current posts
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost)
+  const howManyPages = Math.ceil(posts.length/postsPerPage)
+  
+  return (
+    <div className="container mt-5">
+      <h1 className="text-primary mb-3">My Blog</h1>
+      <Posts postst={currentPosts}/> 
+      <Pagination pages = {howManyPages} setCurrentPage={setCurrentPage}/>
     </div>
-  )
-
+  );
 }
-
 
 export default App;
