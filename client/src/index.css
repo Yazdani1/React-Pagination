@@ -20,11 +20,13 @@
   transition: background-color .2s;
   border: 1px solid #ddd;
   cursor: pointer;
+  border-radius: 90px;
+  margin: 10px;
   
 }
 
 .pagination-container a.active {
-  background-color: #007bff;
+  background-color: #e100ff;
   color: white;
   border: 1px solid #7cbddb;
 }
